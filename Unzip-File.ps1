@@ -2,7 +2,7 @@
 .Synopsis
    Extract a ZIP Archive to a folder path
 .DESCRIPTION
-   This function extracts a ZIP file placing its contents into a folder path under the current folder using .NET 4.5 Windows ZIP library
+   This function extracts a ZIP file placing its contents into a folder path you provide using .NET 4.5 Windows ZIP library
 .EXAMPLE
    Unzip-File -Source D:\foldername -Destination D:\fullpath\zipfilename.zip
 .EXAMPLE
