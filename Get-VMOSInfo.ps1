@@ -10,9 +10,8 @@ foreach ($KVP in $KvpExchangeComponent)
     Add-Member -InputObject $VMObject -Name 'VMName' -Value $VMName -MemberType NoteProperty
     foreach ($KeyValuePair in $GuestIntrinsicExchangeItems)
         {
-        # Write-Host -Object $VMName -ForegroundColor Cyan
-        $PropertyName = ([XML]$KeyValuePair).INSTANCE.PROPERTY.VALUE | Select-Object -First 2 | Select-Object -Last 1
-        $PropertyValue = ([XML]$KeyValuePair).INSTANCE.PROPERTY.VALUE | Select-Object -First 2 | Select-Object -First 1
+        $PropertyName = ([XML]$KeyValuePair).INSTANCE.ChildNodes.Item(5).Value
+        $PropertyValue = ([XML]$KeyValuePair).INSTANCE.ChildNodes.Item(1).Value
         if ($PropertyValue -match "deprecated")
             {
             $PropertyValue = "N/A"
