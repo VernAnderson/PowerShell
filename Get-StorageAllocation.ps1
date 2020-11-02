@@ -19,7 +19,7 @@
     Hyper-V Resource Allocation
 #>
 
-Function Get-ComputeVolumes
+Function Get-CSVPercentFree
 {
 $volumes = Get-ClusterSharedVolume
 foreach ($volume in $volumes)
@@ -27,12 +27,12 @@ foreach ($volume in $volumes)
     $ClusterDisk = $volume.Name
     $OwnerNode = $volume.OwnerNode.Name
     $VolumeName = $volume.SharedVolumeInfo.FriendlyVolumeName
-    $VolumeInfo = Get-Volume -FilePath $volume.SharedVolumeInfo.FriendlyVolumeName
+    $VolumeInfo = $volume | Select-Object -ExpandProperty SharedVolumeInfo | Select-Object FriendlyVolumeName -ExpandProperty Partition
     $VolumeSize = [Math]::Round($VolumeInfo.Size /1GB)
-    $VolumeFree = [Math]::Round($VolumeInfo.SizeRemaining /1GB)
-    $VolumeUsed = ($VolumeSize - $VolumeFree)
-    $VolumeLabel = $VolumeInfo.FileSystemLabel
-    $CSVObject = [ordered]@{'VolumeName'=$VolumeName;'VolumeTotalGB'=$VolumeSize;'VolumeUsedGB'=$VolumeUsed;'VolumeFreeGB'=$VolumeFree;'VolumeLabel'=$VolumeLabel;'ClusterDisk'=$ClusterDisk;'OwnerNode'=$OwnerNode}
+    $VolumeUsed = [Math]::Round($VolumeInfo.UsedSpace /1GB)
+    $VolumeFree = [Math]::Round($VolumeInfo.FreeSpace /1GB)
+    $PercentFree = [Math]::Round($VolumeInfo.PercentFree)
+    $CSVObject = [ordered]@{'VolumeName'=$VolumeName;'VolumeTotalGB'=$VolumeSize;'VolumeUsedGB'=$VolumeUsed;'VolumeFreeGB'=$VolumeFree;'PercentFree'=$PercentFree;'ClusterDisk'=$ClusterDisk;'OwnerNode'=$OwnerNode}
     $VolumeObj = New-Object -TypeName PSObject -Property $CSVObject
     Write-Output -InputObject $VolumeObj
     } # end foreach volume
@@ -70,20 +70,44 @@ foreach ($VM in $VMs)
     Write-Output -InputObject $objTotal
 }
 
-$cluster =  Get-Service -Name ClusSvc -ErrorAction SilentlyContinue
-if ($cluster)
+Function Get-LocalDiskInfo
+{
+$LogicalDisks = Get-CimInstance -ClassName Win32_LogicalDisk
+foreach ($Disk in $LogicalDisks)
     {
-    Get-ComputeVolumes | Sort-Object VolumeName | Format-Table -AutoSize
+    $DriveLetter = $Disk.Name
+    $FileSystemlabel = $Disk.VolumeName
+    $Size = [Math]::Round($Disk.Size /1GB)
+    $UsedSpace = [Math]::Round(($Disk.Size - $Disk.FreeSpace) /1GB)
+    $FreeSpace = [Math]::Round($Disk.FreeSpace /1GB)
+    $Query = 'SELECT PercentFreeSpace,FreeMegabytes FROM Win32_PerfFormattedData_PerfDisk_LogicalDisk WHERE Name=''' + $DriveLetter + "'"
+    $FreeStuff = Get-CimInstance -Query $Query
+    $PercentFree = $FreeStuff.PercentFreeSpace
+    $DiskInfo = [ordered]@{'Drive' = $DriveLetter;
+        'FileSystemlabel' = $FileSystemlabel;
+        'Size(GB)'= $Size;
+        'Used Space (GB)'= ($Size - $FreeSpace);
+        'FreeSpace(GB)'= $FreeSpace;
+        'FreeSpace(%)' = $PercentFree}
+    $obj = New-Object -TypeName PSObject -Property $DiskInfo
+    Write-Output -InputObject $obj
+    } # end foreach Disk
+}
+
+$SharedStorage = Get-ClusterSharedVolume -ErrorAction SilentlyContinue -WarningAction SilentlyContinue | Measure-Object | Select-Object -ExpandProperty Count
+if ($SharedStorage -ge 1)
+    {
+    Get-CSVPercentFree | Sort-Object -Property PercentFree | Format-Table -AutoSize
     $ClusterNodes = Get-ClusterNode | Select-Object -ExpandProperty Name
     foreach ($Node in $ClusterNodes)
         {
         Write-Host -ForegroundColor Green -Object $Node
-        Get-AllocatedStorage | Format-Table -AutoSize | more
+        Get-AllocatedStorage | Format-Table -AutoSize
         }
     }
 else
     {
     $Node = $ENV:COMPUTERNAME
-    Get-Volume
-    Get-AllocatedStorage | Format-Table -AutoSize | more
+    Get-LocalDiskInfo | Format-Table -AutoSize
+    Get-AllocatedStorage | Format-Table -AutoSize
     }
