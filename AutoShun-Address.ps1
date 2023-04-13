@@ -50,4 +50,4 @@ if ($LASTEXITCODE -gt 0)
 elseif ($LASTEXITCODE -eq 0)
     {
     Add-Rule
-    }
+    } 
