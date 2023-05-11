@@ -9,6 +9,6 @@ uninstall method defined by that application
 .OUTPUTS
    This script does not really display any output
 .NOTES
-   I still need to test this version
+   I still need to test this version. Remove the "-WhatIf" switch to have it actually do the deed
 #>
 Get-WmiObject Win32_Product | Out-GridView -Title "Select the application you wish to unistall from Windows" -PassThru | Invoke-WmiMethod -Name "Uninstall" -WhatIf
