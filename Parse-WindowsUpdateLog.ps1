@@ -1,4 +1,4 @@
-# Does not work with Server 2016 or Windows 10
+# Does not work with Server 2016 and newer nor Windows 10 and newer
 Select-String -Path $env:windir\WindowsUpdate.log -Pattern 'successfully installed' |
   ForEach-Object {
     $information = $_ | Select-Object -Property Date, LineNumber, Product
