@@ -1,4 +1,19 @@
-﻿$DomainRole = (Get-WmiObject Win32_ComputerSystem).DomainRole
+<#
+.Synopsis
+   Sets up NTP time sync properly
+.DESCRIPTION
+   Sets the NTP time settings used by the Windows Time service to sync time based on Microsoft Best practices for domain joined computers according to their role
+.EXAMPLE
+   .\Set-NTPTime.ps1
+.EXAMPLE
+   
+.OUTPUTS
+   This command generates the proper syntax and sends it to the w32tm.exe command line utility
+.NOTES
+   This command should be used with caution on Windows Clusters as the cluster service depends on the time service. Time is also extremely important for proper logon and kerberos tickets from Active Directory. One should never turn their backs on time -Casta
+way
+#>
+$DomainRole = (Get-WmiObject Win32_ComputerSystem).DomainRole
 switch ($DomainRole)
     {
     0 {"Stand Alone Workstation" ; $SYNCType = "MANUAL"}
