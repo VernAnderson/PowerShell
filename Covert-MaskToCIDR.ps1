@@ -1,17 +1,17 @@
 <#
 .Synopsis
-   "This script can convert an IP Address and subnet mask to CIDR notation or visa verse depending on what you comment out"
+   This script can convert an IP Address and subnet mask to CIDR notation or visa verse depending on what you comment out
 .DESCRIPTION
-   "To use this script, comment out the either line 18 or line 19 depending on your needs. Then enter the IP Address information you do have and it will convert it to the format you don’t have. For example, if someone gives you an IP Address in CIDR notation i
-t will give you the subnet mask of that network. Otherwise if you know your MASK and IP Address it can convert those to CIDR notation."
+   To use this script, comment out the either line 18 or line 19 depending on your needs. Then enter the IP Address information you do have and it will convert it to the format you don’t have. For example, if someone gives you an IP Address in CIDR notation i
+t will give you the subnet mask of that network. Otherwise if you know your MASK and IP Address it can convert those to CIDR notation.
 .EXAMPLE
-   ".\Covert-MaskToCIDR.ps1 # I have already commented out either line 18 or line 19"
+   .\Covert-MaskToCIDR.ps1 # I have already commented out either line 18 or line 19
 .EXAMPLE
-   "Open this script in PowerShell_ISE and run it from there by pressing F5 or the green arrow"
+   Open this script in PowerShell_ISE and run it from there by pressing F5 or the green arrow
 .OUTPUTS
-   "This script will output the opposite notation of the Network you have. CIDR if you have MASK and MASKE if you feed it CIDR"
+   This script will output the opposite notation of the Network you have. CIDR if you have MASK and MASKE if you feed it CIDR
 .NOTES
-   "This script is not a complete function and was actually whipped up during a job interview in a kind of rushed manor without a lot of direction of what the 2 interviewes wanted. I got the job so it did do what was asked."
+   This script is not a complete function and was actually whipped up during a job interview in a kind of rushed manor without a lot of direction of what the 2 interviewes wanted. I got the job so it did do what was asked. It coul.d be converted to use Parameters and be a lot better
 #>
 #Remove the # in front of $IPwSubnet depending upon the input you want to test and remark the other one out with #
  
