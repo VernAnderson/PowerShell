@@ -1,3 +1,15 @@
+<#
+.Synopsis
+   On a Hyper-V server gets the worker process information for the VMs
+.DESCRIPTION
+   This is a script for getting a list of information related to the Windows process of each Virtual Machine on the Hyper-V HOST
+.EXAMPLE
+   .\Get-VMProcess.ps1
+.OUTPUTS
+   List information about the process of each VM on a Hyper-V HOST Hypervisor
+.NOTES
+   VM processes are the running state of each Virtual Machine and are usually have "vmwp" in the process name
+#>
 $VMWPs = Get-WmiObject -query "SELECT * FROM Win32_Process WHERE Name LIKE '%vmwp%'"
 foreach ($VMWP in $VMWPs)
     {
