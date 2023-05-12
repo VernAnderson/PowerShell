@@ -5,8 +5,6 @@
    This script looks for EVENT IDs in the Windows Application Logs related to MS SQL Backup events and determines whether the backup type was to disk, or to tape, or to a Network UNC path.
 .EXAMPLE
    .\Get-SQLBackupType.ps1
-.EXAMPLE
-   
 .OUTPUTS
    This outputs the backup type to the screen translated from a number to human readable types based on a Microsoft Article that describes those numbers
 .NOTES
