@@ -1,3 +1,17 @@
+<#
+.Synopsis
+   Gets OS information for Hyper-V VMs
+.DESCRIPTION
+   This script will query a Hyper-V host for information about each VMs Operating System, including the OS Windows or Linux and the OS version, as well as the VMs IP Address and othe rinformation
+.EXAMPLE
+   .\Get-VMOSInfo.ps1
+.EXAMPLE
+   Get-VMIntrinsicData | Format-Table VMName,OSName,NetworkAddressIPv4,IntegrationServicesVersion,FullyQualifiedDomainName -AutoSize -Wrap
+.OUTPUTS
+   This script will output from any of the properties in the comment block at the bottom of the script, or by default it will output the following properties: VMName,OSName,NetworkAddressIPv4,IntegrationServicesVersion,FullyQualifiedDomainName
+.NOTES
+   This script is for Microsoft Hyper-V and only works with Hyper-V HOSTs
+#>
 Function Get-VMIntrinsicData
 {
 $KvpExchangeComponent = Get-WmiObject -Namespace "root\virtualization\v2" -Query "SELECT * FROM Msvm_KvpExchangeComponent"
