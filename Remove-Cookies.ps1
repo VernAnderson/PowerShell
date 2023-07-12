@@ -1,4 +1,14 @@
-﻿## Install-Module PSSQLite -Scope CurrentUser ## If the module is not installed yet
+<#
+.Synopsis
+   Removes Cookies from modern web browsers Edge, Chrome, Firefox, and Opera
+.DESCRIPTION
+   Modern browsers no longer use individual TXT files with the domain name they use SQLite databases instead. This script reads those databases and presents a list of cookies by domain so that you can remove unwanted cookies such as advertisers.
+.EXAMPLE
+   .\Remove-Cookies.ps1
+.CREDITS
+   Thanks to RamblingCookieMonsterfor "Warren F" the PSSQLite module https://github.com/RamblingCookieMonster/PSSQLite
+#>
+ ## Install-Module PSSQLite -Scope CurrentUser ## If the module is not installed yet
 Import-Module -Name PSSQLite
 
 $MSEdgeDatabase = "$ENV:USERPROFILE\AppData\Local\Microsoft\Edge\User Data\Default\Network\Cookies"
