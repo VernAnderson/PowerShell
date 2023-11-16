@@ -30,3 +30,8 @@ if ($SYNCType -ne $Null)
     cmd.exe /c "$FilePath /config /update /manualpeerlist:time.nist.gov /syncfromflags:$SYNCType"
     }
 cmd.exe /c "$FilePath /dumpreg /subkey:Parameters"
+
+<#
+Finally found where they moved the document that defines best practices for NTP
+https://social.technet.microsoft.com/wiki/contents/articles/50924.active-directory-time-synchronization.aspx
+#>
