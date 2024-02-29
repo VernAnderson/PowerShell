@@ -1,0 +1,15 @@
+$PossiblyPinnedApps = (New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items()
+foreach ($PossiblyPinnedApp in $PossiblyPinnedApps)
+    {    
+    $Verbs = $PossiblyPinnedApp.Verbs()
+    foreach ($Verb in $Verbs)
+        {
+        $VerbName = $Verb.Name.replace('&', '')
+        if ($VerbName -match 'Unpin from taskbar')
+            {
+            $PinnedAppName = $PossiblyPinnedApp.Name
+            Write-Host "Unpinning $PinnedAppName from the Taskbar" -ForegroundColor Yellow
+            $Verb.DoIt()
+            }
+        }
+    }
