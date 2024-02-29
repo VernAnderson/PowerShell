@@ -13,3 +13,30 @@ foreach ($PossiblyPinnedApp in $PossiblyPinnedApps)
             }
         }
     }
+<#
+## Optional version that provides a list and lets you select which ones to UnPin
+Function Get-PinnedTaskbarApp
+{
+Param ([Parameter(Mandatory=$false,Position=0)]$Appname,[switch]$Unpin)
+$PossiblyPinnedApps = (New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items()
+foreach ($PossiblyPinnedApp in $PossiblyPinnedApps)
+    {
+    if ($Unpin)
+        {
+        ($PossiblyPinnedApps | Where-Object {$_.Name -like $Appname}).Verbs() | Where-Object {$_.Name.replace('&','') -match 'Unpin from taskbar' } | ForEach-Object { $_.DoIt()}
+        }
+    $Verbs = $PossiblyPinnedApp.Verbs()
+    foreach ($Verb in $Verbs)
+        {
+        $VerbName = $Verb.Name.Replace('&','')
+        if ($VerbName -like "Unpin from taskbar") {Write-Output $PossiblyPinnedApp}
+        else {Write-Verbose -Message "$PossiblyPinnedApp is not pinned to the Taskbar"}
+        }
+    }
+}
+$UnPinApps = Get-PinnedTaskbarApp |Select-Object Name | Out-GridView -Title "Select each Application that you would like to unpin from the Windows Taskbar" -PassThru
+foreach ($App in $UnPinApps)
+    {
+    Get-PinnedTaskbarApp -Appname $App.Name -Unpin
+    }
+#>
