@@ -9,7 +9,7 @@
    Thanks to RamblingCookieMonsterfor "Warren F" the PSSQLite module https://github.com/RamblingCookieMonster/PSSQLite
 #>
  ## Install-Module PSSQLite -Scope CurrentUser ## If the module is not installed yet
- Write-Warning -Message "Your browsers will need to not be running" ## Should go without saying bit I forget this every time LOL
+ Write-Warning -Message "Your browsers will need to not be running" ## Should go without saying but I forget this every time LOL
 Import-Module -Name PSSQLite
 
 $MSEdgeDatabase = "$ENV:USERPROFILE\AppData\Local\Microsoft\Edge\User Data\Default\Network\Cookies"
