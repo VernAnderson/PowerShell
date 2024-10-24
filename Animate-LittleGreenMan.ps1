@@ -13,7 +13,7 @@ foreach ($Step in $Steps)
         }
     else
         {
-        $Arms = '|'
+        $Arms = '↓'
         $Legs = '‖'
         Write-Host -Object $Head.PadLeft($Step) -ForegroundColor Green
         Write-Host -Object $Arms.PadLeft($Step) -ForegroundColor Green
