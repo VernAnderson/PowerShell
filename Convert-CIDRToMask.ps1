@@ -1,4 +1,12 @@
-﻿Param (
+ <#
+.Synopsis
+   Convert a MASK in CIDR notation into an IPv4 MASK
+.DESCRIPTION
+   Takes MASK "bits" and converts them into usable IPv4 based octets such as 255.255.255.0
+.EXAMPLE
+   .\Convert-CIDRToMask.ps1 255.255.252.0
+#>
+Param (
 # Enter a number between 1 and 32
 [Parameter(Mandatory=$true)]
 [ValidateRange(0, 32)]
@@ -9,4 +17,5 @@ $BinaryMask = ('1' * $CIDR).PadRight(32, '0')
 $Octets = $BinaryMask -split '(.{8})' -ne '' # A regex matches any single character except a newline and repeat for 8 matches # basically splitting after each 8 charecters
 ## Convert each 8-bit segment to a decimal number and bring them back into one string separated by the dot (or decimal or period)
 $SubnetMask = ($Octets | ForEach-Object { [Convert]::ToInt32($_, 2) }) -join '.'
+
 Write-Host -Object "The SubnetMask for a slash $CIDR is $SubnetMask" -ForegroundColor Green
